@@ -1,0 +1,90 @@
+version: "2"
+
+services:
+  mysql:
+    build: ./mysql
+    image: 'naerymdan/docker-compose-phabricator-mysql'
+    environment:
+      - MYSQL_ROOT_PASSWORD=SAMPLEPASSWORD
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - back
+
+  php:
+    build: ./php7
+    image: 'naerymdan/docker-compose-phabricator-php7'
+    command: FPM
+    environment:
+      - MYSQL_ROOT_PASSWORD=SAMPLEPASSWORD
+    depends_on:
+      - mysql
+    volumes:
+      - phabricator-data:/srv
+      - phabricator-files:/data
+      - phabricator-repo:/repo
+    networks:
+      - back
+
+  web:
+    build: ./nginx
+    image: 'naerymdan/docker-compose-phabricator-nginx'
+    depends_on:
+      - php
+    volumes:
+      - phabricator-data:/srv:ro
+      - phabricator-files:/data:ro
+    ports:
+      - '80:80'
+    networks:
+      - back
+      - front
+
+  phd-pull:
+    build: ./php7
+    image: 'naerymdan/docker-compose-phabricator-php7'
+    command: PULL
+    depends_on:
+      - php
+    volumes:
+      - phabricator-data:/srv
+      - phabricator-files:/data
+      - phabricator-repo:/repo
+
+  phd-task:
+    build: ./php7
+    image: 'naerymdan/docker-compose-phabricator-php7'
+    command: TASK
+    depends_on:
+      - php
+    volumes:
+      - phabricator-data:/srv
+      - phabricator-files:/data
+      - phabricator-repo:/repo
+
+  phd-trig:
+    build: ./php7
+    image: 'naerymdan/docker-compose-phabricator-php7'
+    command: TRIG
+    depends_on:
+      - php
+    volumes:
+      - phabricator-data:/srv
+      - phabricator-files:/data
+      - phabricator-repo:/repo
+
+volumes:
+  mysql-data:
+    driver: local
+  phabricator-data:
+    driver: local
+  phabricator-files:
+    driver: local
+  phabricator-repo:
+    driver: local
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge

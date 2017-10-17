@@ -1,0 +1,23 @@
+{
+  "mysql.pass": "PASSWORD",
+  "mysql.user": "root",
+  "mysql.host": "mysql",
+  "pygments.enabled": true,
+  "storage.local-disk.path": "/data",
+  "repository.default-local-path": "/repo",
+  "files.viewable-mime-types": {
+    "image/jpeg": "image/jpeg",
+    "image/jpg": "image/jpg",
+    "image/png": "image/png",
+    "image/gif": "image/gif",
+    "text/plain": "text/plain; charset=utf-8",
+    "text/x-diff": "text/plain; charset=utf-8",
+    "image/x-ico": "image/x-icon",
+    "image/x-icon": "image/x-icon",
+    "image/vnd.microsoft.icon": "image/x-icon",
+    "audio/x-wav": "audio/x-wav",
+    "application/ogg": "application/ogg",
+    "audio/mpeg": "audio/mpeg",
+    "text/x-php": "text/x-php"
+  }
+}
